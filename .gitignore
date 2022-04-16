@@ -13,7 +13,4 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-/.docker/dbdata/mysql
-/.docker/dbdata/performance_schema
-/.docker/dbdata/sys
-/.docker/dbdata/*.*
+/.docker/dbdata

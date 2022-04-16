@@ -17,5 +17,3 @@ yarn-error.log
 /.docker/dbdata/performance_schema
 /.docker/dbdata/sys
 /.docker/dbdata/*.*
-/.docker/dbdata/ib*
-

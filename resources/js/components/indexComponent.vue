@@ -59,8 +59,8 @@
             this.getTimes();
         },
         methods:{
-            getTimes(){
-                fetch('http://localhost/api/v1/tabela', {
+            async getTimes(){
+                await fetch('http://localhost/api/v1/tabela', {
                     headers: {'Content-Type': 'application/json', 'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='}
                 })
                     .then(response => response.json())
@@ -69,11 +69,11 @@
                         this.times = res
                     })
             },
-            atualizarTabela(){
+            async atualizarTabela(){
                 $('.atualizarTabela').removeClass('d-none');
                 $('.btAtualizar').addClass('d-none');
 
-                fetch('http://localhost/api/v1/tabela', {
+                await fetch('http://localhost/api/v1/tabela', {
                     headers: {'Content-Type': 'application/json', 'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='}
                 })
                 .then(response => response.json())

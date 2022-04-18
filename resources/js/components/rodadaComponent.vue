@@ -31,35 +31,39 @@
                     </th>
                 </thead>
                 <tbody>
-                    <tr v-for="rodada in rodadas" v-if="rodada.error == true">
-                        <td class="d-flex justify-content-center align-items-center" style="border: none;background: #eee;">
-                            <b>{{rodada.message}}</b>
-                        </td>
-                    </tr>
-                    <tr v-for="rodada in rodadas" v-if="rodada.error !== true">
-                        <td class="d-flex justify-content-center align-items-center" style="border: none;background: #eee;">
-                            <b style="text-align:center;font-size:12px;">{{format_date(rodada.data_jogo)}} - {{rodada.estadio}}</b>
-                        </td>
-                        <td class="d-flex justify-content-center align-items-center">
-                            <template v-for="time in times" v-if="rodada.id_time_casa !== time.id"></template>
-                            <template v-else>
-                                <span style="margin-right:10px;text-align:center;font-size:xx-small;">
-                                    <img :src="time.escudo" :alt="time.time" :title="time.time" class="timeEscudos" height="27px">
-                                    <br/>
-                                    {{time.time}}
-                                </span>
-                            </template>
-                            {{rodada.placar_time_casa}} <span style="margin: 0 10px;">x</span> {{rodada.placar_time_fora}}
-                            <template v-for="time in times" v-if="rodada.id_time_fora !== time.id"></template>
-                            <template v-else>
-                                <span style="margin-left:10px;text-align:center;font-size:xx-small;">
-                                    <img :src="time.escudo" :alt="time.time" :title="time.time" class="timeEscudos" height="27px">
-                                    <br/>
-                                    {{time.time}}
-                                </span>
-                            </template>
-                        </td>
-                    </tr>
+                    <template v-for="rodada in rodadas" v-if="rodada.error == true">
+                        <tr>
+                            <td class="d-flex justify-content-center align-items-center" style="border: none;background: #eee;">
+                                <b>{{rodada.message}}</b>
+                            </td>
+                        </tr>
+                    </template>
+                    <template v-else>
+                        <tr>
+                            <td class="d-flex justify-content-center align-items-center" style="border: none;background: #eee;">
+                                <b style="text-align:center;font-size:12px;">{{format_date(rodada.data_jogo)}} - {{rodada.estadio}}</b>
+                            </td>
+                            <td class="d-flex justify-content-center align-items-center">
+                                <template v-for="time in times" v-if="rodada.id_time_casa !== time.id"></template>
+                                <template v-else>
+                                    <span style="margin-right:10px;text-align:center;font-size:xx-small;">
+                                        <img :src="time.escudo" :alt="time.time" :title="time.time" class="timeEscudos" height="27px">
+                                        <br/>
+                                        {{time.time}}
+                                    </span>
+                                </template>
+                                {{rodada.placar_time_casa}} <span style="margin: 0 10px;">x</span> {{rodada.placar_time_fora}}
+                                <template v-for="time in times" v-if="rodada.id_time_fora !== time.id"></template>
+                                <template v-else>
+                                    <span style="margin-left:10px;text-align:center;font-size:xx-small;">
+                                        <img :src="time.escudo" :alt="time.time" :title="time.time" class="timeEscudos" height="27px">
+                                        <br/>
+                                        {{time.time}}
+                                    </span>
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
                 </tbody>
             </table>
         </div>
@@ -80,10 +84,10 @@
             closeAlert(){
                 $('.alert-warning').addClass('d-none');
             },
-            selecionarRodada(){
+            async selecionarRodada(){
                 if(selecionarRodada.value !== ""){
                     $('.carregandoRodada').removeClass('d-none');
-                    fetch('http://localhost/api/v1/rodadas/' + selecionarRodada.value, {
+                    await fetch('http://localhost/api/v1/rodadas/' + selecionarRodada.value, {
                         headers: {'Content-Type': 'application/json', 'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='}
                     })
                         .then(response => response.json())
@@ -92,7 +96,7 @@
                             this.rodadas = res
                         })
 
-                    fetch('http://localhost/api/v1/tabela', {
+                    await fetch('http://localhost/api/v1/tabela', {
                         headers: {'Content-Type': 'application/json', 'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='}
                     })
                         .then(response => response.json())
@@ -103,10 +107,10 @@
                     $('.alert-warning').removeClass('d-none');
                 }
             },
-            atualizarRodada(){
+            async atualizarRodada(){
                 if(selecionarRodada.value !== ""){
                     $('.carregandoRodada').removeClass('d-none');
-                    fetch('http://localhost/api/v1/rodadas/' + selecionarRodada.value, {
+                    await fetch('http://localhost/api/v1/rodadas/' + selecionarRodada.value, {
                         headers: {'Content-Type': 'application/json', 'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='}
                     })
                     .then(response => response.json())

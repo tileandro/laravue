@@ -35,8 +35,8 @@ class WelcomeController extends Controller
             $times = DB::table('tabela_2022')
                 ->orderBy('ponto', 'desc')
                 ->orderBy('vitoria', 'desc')
-                ->orderBy('empate', 'desc')
-                ->orderBy('derrota', 'asc')
+                ->orderBy('saldo_gols', 'desc')
+                ->orderBy('gols_pro', 'desc')
                 ->orderBy('time', 'asc')
                 ->get();
             return response()->json($times);

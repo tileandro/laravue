@@ -5372,14 +5372,72 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      times: []
+      times: [],
+      dadosApi: []
     };
   },
   created: function created() {
     this.getTimes();
+    this.apiCampeonato();
   },
   methods: {
     getTimes: function getTimes() {
@@ -5390,8 +5448,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return fetch('http://localhost/api/v1/tabela', {
+                fetch('http://localhost/api/v1/tabela', {
                   headers: {
                     'Content-Type': 'application/json',
                     'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='
@@ -5401,9 +5458,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }).then(function (res) {
                   $('.carregandoTabela').addClass('d-none');
                   _this.times = res;
+                })["catch"](function (err) {
+                  return console.log('Erro ao retornar tabela!');
                 });
 
-              case 2:
+              case 1:
               case "end":
                 return _context.stop();
             }
@@ -5419,7 +5478,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                $('.atualizarTabela').removeClass('d-none');
+                $('.carregandoTabela').removeClass('d-none');
                 $('.btAtualizar').addClass('d-none');
                 _context2.next = 4;
                 return fetch('http://localhost/api/v1/tabela', {
@@ -5430,17 +5489,64 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }).then(function (response) {
                   return response.json();
                 }).then(function (res) {
-                  $('.atualizarTabela').addClass('d-none');
+                  $('.carregandoTabela').addClass('d-none');
                   $('.btAtualizar').removeClass('d-none');
                   _this2.times = res;
+                })["catch"](function (err) {
+                  return console.log('Erro ao retornar dados atualizados da tabela!');
                 });
 
               case 4:
+                _context2.next = 6;
+                return fetch('https://api.api-futebol.com.br/v1/campeonatos/10/tabela', {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer live_53fb456a4c437fd59183fb7969f78c'
+                  }
+                }).then(function (response) {
+                  return response.json();
+                }).then(function (res) {
+                  _this2.dadosApi = res;
+                })["catch"](function (err) {
+                  return console.log('Erro ao retornar dados da API!');
+                });
+
+              case 6:
               case "end":
                 return _context2.stop();
             }
           }
         }, _callee2);
+      }))();
+    },
+    apiCampeonato: function apiCampeonato() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return fetch('https://api.api-futebol.com.br/v1/campeonatos/10/tabela', {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer live_53fb456a4c437fd59183fb7969f78c'
+                  }
+                }).then(function (response) {
+                  return response.json();
+                }).then(function (res) {
+                  _this3.dadosApi = res;
+                })["catch"](function (err) {
+                  return console.log('Erro ao retornar dados da API!');
+                });
+
+              case 2:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
       }))();
     }
   }
@@ -5469,6 +5575,10 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -5882,7 +5992,13 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
       empate_fora: null,
       derrota_fora: null,
       time_casa: null,
-      time_fora: null
+      time_fora: null,
+      gols_pro_casa: null,
+      gols_contra_casa: null,
+      saldo_gols_casa: null,
+      gols_pro_fora: null,
+      gols_contra_fora: null,
+      saldo_gols_fora: null
     };
   },
   created: function created() {},
@@ -6127,7 +6243,6 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                     return Promise.reject(error);
                   }
 
-                  console.log(data);
                   $('.editandoJogo').addClass('d-none');
                   $('.alert').show();
 
@@ -6178,8 +6293,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                   placar_time_fora: _this5.edit_placar_time_fora
                 };
                 placarJson = JSON.stringify(placar);
-                console.log(placarJson);
-                _context4.next = 7;
+                _context4.next = 6;
                 return fetch('http://localhost/api/v1/rodadas/' + _this5.edit_id, {
                   headers: {
                     'Content-Type': 'application/json',
@@ -6201,7 +6315,6 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                     return Promise.reject(error);
                   }
 
-                  console.log(data);
                   $('.placarJogo').addClass('d-none');
 
                   if (_this5.edit_placar_time_casa > _this5.edit_placar_time_fora) {
@@ -6218,7 +6331,6 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                       _this5.vitoria_casa = res[0].vitoria;
                       _this5.empate_casa = res[0].empate;
                       _this5.derrota_casa = res[0].derrota;
-                      _this5.time_casa = res[0].time;
                       var updateCasa = {
                         ponto: _this5.ponto_casa + 3,
                         jogo: _this5.jogo_casa + 1,
@@ -6395,8 +6507,68 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                         return response.json();
                       }).then(function (res) {});
                     });
-                  }
+                  } //Gols Pro, contra e saldo de gols time da casa
 
+
+                  //Gols Pro, contra e saldo de gols time da casa
+                  fetch('http://localhost/api/v1/times/' + _this5.edit_id_time_casa, {
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='
+                    }
+                  }).then(function (response) {
+                    return response.json();
+                  }).then(function (res) {
+                    _this5.gols_pro_casa = res[0].gols_pro;
+                    _this5.gols_contra_casa = res[0].gols_contra;
+                    _this5.saldo_gols_casa = res[0].saldo_gols;
+                    var updateGolsCasa = {
+                      gols_pro: _this5.gols_pro_casa + parseInt(_this5.edit_placar_time_casa),
+                      gols_contra: _this5.gols_contra_casa + parseInt(_this5.edit_placar_time_fora),
+                      saldo_gols: _this5.gols_pro_casa + parseInt(_this5.edit_placar_time_casa) - (_this5.gols_contra_casa + parseInt(_this5.edit_placar_time_fora))
+                    };
+                    var updateJsonGolsCasa = JSON.stringify(updateGolsCasa);
+                    fetch('http://localhost/api/v1/times/' + _this5.edit_id_time_casa, {
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='
+                      },
+                      method: 'PUT',
+                      body: updateJsonGolsCasa
+                    }).then(function (response) {
+                      return response.json();
+                    }).then(function (res) {});
+                  }); //Gols Pro, contra e saldo de gols time visitante
+
+                  //Gols Pro, contra e saldo de gols time visitante
+                  fetch('http://localhost/api/v1/times/' + _this5.edit_id_time_fora, {
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='
+                    }
+                  }).then(function (response) {
+                    return response.json();
+                  }).then(function (res) {
+                    _this5.gols_pro_fora = res[0].gols_pro;
+                    _this5.gols_contra_fora = res[0].gols_contra;
+                    _this5.saldo_gols_fora = res[0].saldo_gols;
+                    var updateGolsFora = {
+                      gols_pro: _this5.gols_pro_fora + parseInt(_this5.edit_placar_time_fora),
+                      gols_contra: _this5.gols_contra_fora + parseInt(_this5.edit_placar_time_casa),
+                      saldo_gols: _this5.gols_pro_fora + parseInt(_this5.edit_placar_time_fora) - (_this5.gols_contra_fora + parseInt(_this5.edit_placar_time_casa))
+                    };
+                    var updateJsonGolsFora = JSON.stringify(updateGolsFora);
+                    fetch('http://localhost/api/v1/times/' + _this5.edit_id_time_fora, {
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='
+                      },
+                      method: 'PUT',
+                      body: updateJsonGolsFora
+                    }).then(function (response) {
+                      return response.json();
+                    }).then(function (res) {});
+                  });
                   $('.placarJogo').addClass('d-none');
 
                   _this5.selecionarRodada();
@@ -6407,7 +6579,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                   _this5.msg = "Placar " + _this5.edit_time_casa + " x " + _this5.edit_time_fora + " inserido com sucesso!", _this5.edit_placar_casa = null, _this5.edit_placar_fora = null;
                 });
 
-              case 7:
+              case 6:
               case "end":
                 return _context4.stop();
             }
@@ -6566,6 +6738,8 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                 }).then(function (res) {
                   $('.carregandoRodada').addClass('d-none');
                   _this.rodadas = res;
+                })["catch"](function (err) {
+                  return console.log('Erro ao retornar dados!');
                 });
 
               case 4:
@@ -6579,6 +6753,8 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                   return response.json();
                 }).then(function (res) {
                   _this.times = res;
+                })["catch"](function (err) {
+                  return console.log('Erro ao retornar dados!');
                 });
 
               case 6:
@@ -6621,6 +6797,8 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                 }).then(function (res) {
                   $('.carregandoRodada').addClass('d-none');
                   _this2.rodadas = res;
+                })["catch"](function (err) {
+                  return console.log('Erro ao retornar dados!');
                 });
 
               case 4:
@@ -6659,6 +6837,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -6731,48 +6919,317 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      times: []
+      times: [],
+      dadosApi: [],
+      msg: null,
+      classe: null,
+      time: null,
+      escudo: null,
+      file: null,
+      size: null,
+      type: null
     };
   },
   created: function created() {
     this.getTimes();
+    this.apiCampeonato();
   },
   methods: {
     getTimes: function getTimes() {
       var _this = this;
 
-      fetch('http://localhost/api/v1/tabela', {
-        headers: {
-          'Content-Type': 'application/json',
-          'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='
-        }
-      }).then(function (response) {
-        return response.json();
-      }).then(function (res) {
-        $('.carregandoTabela').addClass('d-none');
-        _this.times = res;
-      });
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return fetch('http://localhost/api/v1/tabela', {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='
+                  }
+                }).then(function (response) {
+                  return response.json();
+                }).then(function (res) {
+                  $('.carregandoTabela').addClass('d-none');
+                  _this.times = res;
+                })["catch"](function (err) {
+                  return console.log('Erro ao retornar tabela!');
+                });
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     },
     atualizarTabela: function atualizarTabela() {
       var _this2 = this;
 
-      $('.atualizarTabela').removeClass('d-none');
-      $('.btAtualizar').addClass('d-none');
-      fetch('http://localhost/api/v1/tabela', {
-        headers: {
-          'Content-Type': 'application/json',
-          'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='
-        }
-      }).then(function (response) {
-        return response.json();
-      }).then(function (res) {
-        $('.atualizarTabela').addClass('d-none');
-        $('.btAtualizar').removeClass('d-none');
-        _this2.times = res;
-      });
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                $('.carregandoTabela').removeClass('d-none');
+                $('.btAtualizar').addClass('d-none');
+                _context2.next = 4;
+                return fetch('http://localhost/api/v1/tabela', {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='
+                  }
+                }).then(function (response) {
+                  return response.json();
+                }).then(function (res) {
+                  $('.carregandoTabela').addClass('d-none');
+                  $('.btAtualizar').removeClass('d-none');
+                  _this2.times = res;
+                })["catch"](function (err) {
+                  return console.log('Erro ao retornar dados atualizados da tabela!');
+                });
+
+              case 4:
+                _context2.next = 6;
+                return fetch('https://api.api-futebol.com.br/v1/campeonatos/10/tabela', {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer live_53fb456a4c437fd59183fb7969f78c'
+                  }
+                }).then(function (response) {
+                  return response.json();
+                }).then(function (res) {
+                  _this2.dadosApi = res;
+                })["catch"](function (err) {
+                  return console.log('Erro ao retornar dados da API!');
+                });
+
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    apiCampeonato: function apiCampeonato() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return fetch('https://api.api-futebol.com.br/v1/campeonatos/10/tabela', {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer live_53fb456a4c437fd59183fb7969f78c'
+                  }
+                }).then(function (response) {
+                  return response.json();
+                }).then(function (res) {
+                  _this3.dadosApi = res;
+                })["catch"](function (err) {
+                  return console.log('Erro ao retornar dados da API!');
+                });
+
+              case 2:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    modalCadastrarTime: function modalCadastrarTime() {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                $('#modalCadastrarTime').modal('toggle');
+
+                _this4.getTimes();
+
+                $('.btn-close, .close, .modal-open').click(function () {
+                  $('.alert').hide();
+                });
+                $('.alert').hide();
+
+              case 4:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
+    },
+    handleFileUpload: function handleFileUpload(e) {
+      $('.alert').hide();
+      this.file = e.target.files[0];
+      this.size = e.target.files[0].size;
+      this.type = e.target.files[0].type;
+
+      if (this.type !== 'image/png' && this.type !== 'image/jpg' && this.type !== 'image/jpeg') {
+        $('.alert').show();
+        this.classe = "danger";
+        this.msg = 'Arquivo não permitido, arquivos de imagens permitidos (png, jpg ou jpeg)';
+        $('#escudo').val('');
+      }
+
+      if (this.size > 200000) {
+        $('.alert').show();
+        this.classe = "danger";
+        this.msg = 'Imagem não pode ser maior que 200KB';
+        $('#escudo').val('');
+      }
+    },
+    createTime: function createTime(e) {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        var formData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                e.preventDefault();
+                $('.carregarTime').removeClass('d-none');
+                formData = new FormData();
+                formData.append('time', _this5.time);
+                formData.append('escudo', _this5.file);
+                axios__WEBPACK_IMPORTED_MODULE_1___default().post('http://localhost/api/v1/times', formData, {
+                  headers: {
+                    'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='
+                  }
+                }).then(function (res) {
+                  $('.carregarTime').addClass('d-none');
+
+                  _this5.atualizarTabela();
+
+                  $('.alert').show();
+                  _this5.classe = "success", _this5.msg = _this5.time + " cadastrado com sucesso!", $('#time').val('');
+                  _this5.size = null, _this5.type = null;
+                })["catch"](function (err) {
+                  $('.carregarTime').addClass('d-none');
+                  $('.alert').show();
+                  _this5.classe = "danger", _this5.msg = "Erro ao realizar cadastro!";
+                });
+
+              case 6:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }))();
     }
   }
 });
@@ -52072,142 +52529,244 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "table-responsive" }, [
-    _c("table", { staticClass: "table table-hover" }, [
-      _c("thead", [
-        _c(
-          "th",
-          { staticClass: "d-flex justify-content-center align-items-center" },
-          [
-            _c("div", { staticClass: "form-group" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-outline-primary btn-sm btAtualizar",
-                  attrs: {
-                    type: "button",
-                    alt: "Atuliazar Tabela",
-                    title: "Atuliazar Tabela",
-                  },
-                  on: {
-                    click: function ($event) {
-                      return _vm.atualizarTabela()
-                    },
-                  },
+    _c("h1", [
+      _vm._v("\n        Tabela\n        "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-outline-primary btn-sm btAtualizar",
+          attrs: {
+            type: "button",
+            alt: "Atuliazar Tabela",
+            title: "Atuliazar Tabela",
+          },
+          on: {
+            click: function ($event) {
+              return _vm.atualizarTabela()
+            },
+          },
+        },
+        [
+          _c(
+            "svg",
+            {
+              staticClass: "bi bi-arrow-clockwise",
+              attrs: {
+                xmlns: "http://www.w3.org/2000/svg",
+                width: "16",
+                height: "16",
+                fill: "currentColor",
+                viewBox: "0 0 16 16",
+              },
+            },
+            [
+              _c("path", {
+                attrs: {
+                  "fill-rule": "evenodd",
+                  d: "M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z",
                 },
-                [
-                  _c(
-                    "svg",
-                    {
-                      staticClass: "bi bi-arrow-clockwise",
-                      attrs: {
-                        xmlns: "http://www.w3.org/2000/svg",
-                        width: "16",
-                        height: "16",
-                        fill: "currentColor",
-                        viewBox: "0 0 16 16",
-                      },
-                    },
-                    [
-                      _c("path", {
-                        attrs: {
-                          "fill-rule": "evenodd",
-                          d: "M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z",
-                        },
-                      }),
-                      _vm._v(" "),
-                      _c("path", {
-                        attrs: {
-                          d: "M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z",
-                        },
-                      }),
-                    ]
-                  ),
-                ]
-              ),
+              }),
               _vm._v(" "),
-              _vm._m(0),
-            ]),
-          ]
-        ),
-        _vm._v(" "),
-        _vm._m(1),
-        _vm._v(" "),
-        _vm._m(2),
-        _vm._v(" "),
-        _vm._m(3),
-        _vm._v(" "),
-        _vm._m(4),
-        _vm._v(" "),
-        _vm._m(5),
-        _vm._v(" "),
-        _vm._m(6),
-      ]),
+              _c("path", {
+                attrs: {
+                  d: "M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z",
+                },
+              }),
+            ]
+          ),
+        ]
+      ),
+    ]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-hover table-striped" }, [
+      _vm._m(0),
       _vm._v(" "),
       _c(
         "tbody",
-        _vm._l(_vm.times, function (t, key) {
-          return _c("tr", [
-            _c(
-              "th",
-              {
-                class:
-                  key < 4
-                    ? "table-primary"
-                    : key >= 4 && key < 6
-                    ? "table-info"
-                    : key >= 6 && key < 12
-                    ? "table-warning"
-                    : key > 15
-                    ? "table-danger"
-                    : "",
-                staticStyle: {
-                  "vertical-align": "middle",
-                  "text-align": "center",
+        [
+          _vm._m(1),
+          _vm._v(" "),
+          _vm._l(_vm.times, function (t, key) {
+            return _c("tr", [
+              _c(
+                "th",
+                {
+                  staticClass: "text-center align-middle",
+                  style:
+                    key < 4
+                      ? "background: rgb(182 227 182);"
+                      : key >= 4 && key < 6
+                      ? "background: rgb(225 226 255);"
+                      : key >= 6 && key < 12
+                      ? "background: #f2e7c3;"
+                      : key > 15
+                      ? "background: #eccccf;"
+                      : "background: #ffffff",
                 },
-              },
-              [
-                _vm._v(
-                  "\n                        " +
-                    _vm._s((key = key + 1)) +
-                    "º\n                        "
-                ),
-                _c(
-                  "small",
-                  {
-                    staticClass:
-                      "d-flex justify-content-center align-items-center",
-                    staticStyle: { "font-size": "x-small" },
-                  },
-                  [
-                    _vm._v(
-                      "\n                            " +
-                        _vm._s(
-                          key <= 4
-                            ? "Libertadores"
-                            : key > 4 && key <= 6
-                            ? "Pré-Libertadores"
-                            : key <= 12
-                            ? "Sulamericana"
-                            : key > 16
-                            ? "Rebaixamento"
-                            : ""
-                        ) +
-                        "\n                        "
-                    ),
-                  ]
-                ),
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "td",
-              {
-                staticStyle: {
-                  "vertical-align": "middle",
-                  "text-align": "center",
-                },
-              },
-              [
+                [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s((key = key + 1)) +
+                      "º\n                        "
+                  ),
+                  _vm._l(_vm.dadosApi, function (api) {
+                    return api.time.time_id !== t.id
+                      ? void 0
+                      : [
+                          api.variacao_posicao < 0
+                            ? [
+                                _c(
+                                  "small",
+                                  {
+                                    staticStyle: {
+                                      color: "red",
+                                      "font-size": "8px",
+                                      "vertical-align": "super",
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "svg",
+                                      {
+                                        staticClass: "bi bi-box-arrow-in-down",
+                                        attrs: {
+                                          xmlns: "http://www.w3.org/2000/svg",
+                                          width: "11",
+                                          height: "11",
+                                          fill: "currentColor",
+                                          viewBox: "0 0 16 16",
+                                        },
+                                      },
+                                      [
+                                        _c("path", {
+                                          attrs: {
+                                            "fill-rule": "evenodd",
+                                            d: "M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z",
+                                          },
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(api.variacao_posicao) +
+                                        "\n                                "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            : api.variacao_posicao > 0
+                            ? [
+                                _c(
+                                  "small",
+                                  {
+                                    staticStyle: {
+                                      color: "green",
+                                      "font-size": "8px",
+                                      "vertical-align": "super",
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "svg",
+                                      {
+                                        staticClass: "bi bi-box-arrow-in-up",
+                                        attrs: {
+                                          xmlns: "http://www.w3.org/2000/svg",
+                                          width: "11",
+                                          height: "11",
+                                          fill: "currentColor",
+                                          viewBox: "0 0 16 16",
+                                        },
+                                      },
+                                      [
+                                        _c("path", {
+                                          attrs: {
+                                            "fill-rule": "evenodd",
+                                            d: "M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3z",
+                                          },
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(api.variacao_posicao) +
+                                        "\n                                "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            : [
+                                _c(
+                                  "small",
+                                  {
+                                    staticStyle: {
+                                      color: "gray",
+                                      "font-size": "8px",
+                                      "vertical-align": "super",
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "svg",
+                                      {
+                                        staticClass: "bi bi-square-fill",
+                                        attrs: {
+                                          xmlns: "http://www.w3.org/2000/svg",
+                                          width: "11",
+                                          height: "11",
+                                          fill: "currentColor",
+                                          viewBox: "0 0 16 16",
+                                        },
+                                      },
+                                      [
+                                        _c("path", {
+                                          attrs: {
+                                            d: "M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z",
+                                          },
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(api.variacao_posicao) +
+                                        "\n                                "
+                                    ),
+                                  ]
+                                ),
+                              ],
+                        ]
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "small",
+                    {
+                      staticClass:
+                        "d-flex justify-content-center align-items-center",
+                      staticStyle: { "font-size": "x-small" },
+                    },
+                    [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(
+                            key <= 4
+                              ? "Libertadores"
+                              : key > 4 && key <= 6
+                              ? "Pré-Libertadores"
+                              : key <= 12
+                              ? "Sulamericana"
+                              : key > 16
+                              ? "Rebaixamento"
+                              : ""
+                          ) +
+                          "\n                        "
+                      ),
+                    ]
+                  ),
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("td", { staticClass: "text-center align-middle" }, [
                 _c("img", { attrs: { src: t.escudo, width: "30px" } }),
                 _vm._v(" "),
                 _c("br"),
@@ -52215,31 +52774,143 @@ var render = function () {
                 _c("span", { staticStyle: { "font-size": "xx-small" } }, [
                   _vm._v(_vm._s(t.time)),
                 ]),
-              ]
-            ),
-            _vm._v(" "),
-            _c("td", { staticStyle: { "vertical-align": "middle" } }, [
-              _vm._v(_vm._s(t.ponto)),
-            ]),
-            _vm._v(" "),
-            _c("td", { staticStyle: { "vertical-align": "middle" } }, [
-              _vm._v(_vm._s(t.jogo)),
-            ]),
-            _vm._v(" "),
-            _c("td", { staticStyle: { "vertical-align": "middle" } }, [
-              _vm._v(_vm._s(t.vitoria)),
-            ]),
-            _vm._v(" "),
-            _c("td", { staticStyle: { "vertical-align": "middle" } }, [
-              _vm._v(_vm._s(t.empate)),
-            ]),
-            _vm._v(" "),
-            _c("td", { staticStyle: { "vertical-align": "middle" } }, [
-              _vm._v(_vm._s(t.derrota)),
-            ]),
-          ])
-        }),
-        0
+              ]),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center align-middle",
+                  staticStyle: { background: "#e6e7e9" },
+                },
+                [_vm._v(_vm._s(t.ponto))]
+              ),
+              _vm._v(" "),
+              _c("td", { staticClass: "text-center align-middle" }, [
+                _vm._v(_vm._s(t.jogo)),
+              ]),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center align-middle",
+                  staticStyle: { background: "#e6e7e9" },
+                },
+                [_vm._v(_vm._s(t.vitoria))]
+              ),
+              _vm._v(" "),
+              _c("td", { staticClass: "text-center align-middle" }, [
+                _vm._v(_vm._s(t.empate)),
+              ]),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center align-middle",
+                  staticStyle: { background: "#e6e7e9" },
+                },
+                [_vm._v(_vm._s(t.derrota))]
+              ),
+              _vm._v(" "),
+              _c("td", { staticClass: "text-center align-middle" }, [
+                _vm._v(_vm._s(t.gols_pro)),
+              ]),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center align-middle",
+                  staticStyle: { background: "#e6e7e9" },
+                },
+                [_vm._v(_vm._s(t.gols_contra))]
+              ),
+              _vm._v(" "),
+              _c("td", { staticClass: "text-center align-middle" }, [
+                _vm._v(_vm._s(t.saldo_gols)),
+              ]),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center align-middle",
+                  staticStyle: { background: "#e6e7e9" },
+                },
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(
+                        t.ponto ? Math.floor((t.ponto * 100) / (t.jogo * 3)) : 0
+                      ) +
+                      "%\n                "
+                  ),
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center",
+                  staticStyle: { "vertical-align": "middle" },
+                },
+                [
+                  _vm._l(_vm.dadosApi, function (api) {
+                    return api.time.time_id !== t.id
+                      ? void 0
+                      : _vm._l(api.ultimos_jogos, function (u) {
+                          return [
+                            u == "v"
+                              ? [
+                                  _c(
+                                    "span",
+                                    {
+                                      staticClass: "badge m-1",
+                                      staticStyle: {
+                                        width: "15px",
+                                        height: "15px",
+                                        background: "green",
+                                      },
+                                    },
+                                    [_vm._v(" ")]
+                                  ),
+                                ]
+                              : u == "d"
+                              ? [
+                                  _c(
+                                    "span",
+                                    {
+                                      staticClass: "badge m-1",
+                                      staticStyle: {
+                                        width: "15px",
+                                        height: "15px",
+                                        background: "red",
+                                      },
+                                    },
+                                    [_vm._v(" ")]
+                                  ),
+                                ]
+                              : [
+                                  _c(
+                                    "span",
+                                    {
+                                      staticClass: "badge m-1",
+                                      staticStyle: {
+                                        width: "15px",
+                                        height: "15px",
+                                        background: "gray",
+                                      },
+                                    },
+                                    [_vm._v(" ")]
+                                  ),
+                                ],
+                          ]
+                        })
+                  }),
+                ],
+                2
+              ),
+            ])
+          }),
+        ],
+        2
       ),
     ]),
   ])
@@ -52249,9 +52920,57 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "atualizarTabela d-none" }, [
-      _c("div", { staticClass: "spinner-border", attrs: { role: "status" } }, [
-        _c("span", { staticClass: "sr-only" }),
+    return _c("thead", { staticStyle: { background: "#cfe2ff" } }, [
+      _c("th", [
+        _c("div", { staticClass: "form-group text-center" }, [
+          _vm._v("CLASSIFICAÇÃO"),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("th", [
+        _c("div", { staticClass: "form-group text-center" }, [_vm._v("TIMES")]),
+      ]),
+      _vm._v(" "),
+      _c("th", [
+        _c("div", { staticClass: "form-group text-center" }, [_vm._v("P")]),
+      ]),
+      _vm._v(" "),
+      _c("th", [
+        _c("div", { staticClass: "form-group text-center" }, [_vm._v("J")]),
+      ]),
+      _vm._v(" "),
+      _c("th", [
+        _c("div", { staticClass: "form-group text-center" }, [_vm._v("V")]),
+      ]),
+      _vm._v(" "),
+      _c("th", [
+        _c("div", { staticClass: "form-group text-center" }, [_vm._v("E")]),
+      ]),
+      _vm._v(" "),
+      _c("th", [
+        _c("div", { staticClass: "form-group text-center" }, [_vm._v("D")]),
+      ]),
+      _vm._v(" "),
+      _c("th", [
+        _c("div", { staticClass: "form-group text-center" }, [_vm._v("GP")]),
+      ]),
+      _vm._v(" "),
+      _c("th", [
+        _c("div", { staticClass: "form-group text-center" }, [_vm._v("GC")]),
+      ]),
+      _vm._v(" "),
+      _c("th", [
+        _c("div", { staticClass: "form-group text-center" }, [_vm._v("SG")]),
+      ]),
+      _vm._v(" "),
+      _c("th", [
+        _c("div", { staticClass: "form-group text-center" }, [_vm._v("%")]),
+      ]),
+      _vm._v(" "),
+      _c("th", [
+        _c("div", { staticClass: "form-group text-center" }, [
+          _vm._v("ÚLT.JOGOS"),
+        ]),
       ]),
     ])
   },
@@ -52259,52 +52978,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("th", [
-      _c(
-        "div",
-        { staticClass: "form-group", staticStyle: { "text-align": "center" } },
-        [_vm._v("Times")]
-      ),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("th", [
-      _c("div", { staticClass: "form-group" }, [_vm._v("Pontos")]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("th", [
-      _c("div", { staticClass: "form-group" }, [_vm._v("Jogos")]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("th", [
-      _c("div", { staticClass: "form-group" }, [_vm._v("Vitórias")]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("th", [
-      _c("div", { staticClass: "form-group" }, [_vm._v("Empates")]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("th", [
-      _c("div", { staticClass: "form-group" }, [_vm._v("Derrotas")]),
+    return _c("tr", { staticClass: "carregandoTabela" }, [
+      _c("td", { attrs: { colspan: "12" } }, [
+        _c("div", { staticClass: "d-flex justify-content-center" }, [
+          _c(
+            "div",
+            { staticClass: "spinner-border", attrs: { role: "status" } },
+            [_c("span", { staticClass: "sr-only" })]
+          ),
+        ]),
+      ]),
     ])
   },
 ]
@@ -52376,11 +53059,11 @@ var render = function () {
       2
     ),
     _vm._v(" "),
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "table-responsive" }, [
-      _c("table", { staticClass: "table table-hover" }, [
-        _c("thead", [
+    _c("div", { staticClass: "table-responsive mt-3" }, [
+      _c("table", { staticClass: "table table-hover table-striped" }, [
+        _c("thead", { staticStyle: { background: "#cfe2ff" } }, [
+          _vm._m(0),
+          _vm._v(" "),
           _vm._m(1),
           _vm._v(" "),
           _vm._m(2),
@@ -52395,41 +53078,34 @@ var render = function () {
           _vm._v(" "),
           _vm._m(7),
           _vm._v(" "),
-          _vm._m(8),
-          _vm._v(" "),
           _c("th", [
-            _c(
-              "div",
-              {
-                staticClass: "form-group",
-                staticStyle: { "text-align": "center" },
-              },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary btn-sm cadastrarjogo d-none",
-                    attrs: { type: "button", "data-name": "Cadastrar jogo" },
-                    on: {
-                      click: function ($event) {
-                        return _vm.modalJogo()
-                      },
+            _c("div", { staticClass: "form-group text-center" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary btn-sm cadastrarjogo d-none",
+                  attrs: { type: "button", "data-name": "Cadastrar jogo" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.modalJogo()
                     },
                   },
-                  [
-                    _vm._v(
-                      "\n                            Cadastrar jogos\n                        "
-                    ),
-                  ]
-                ),
-              ]
-            ),
+                },
+                [
+                  _vm._v(
+                    "\n                            Cadastrar jogos\n                        "
+                  ),
+                ]
+              ),
+            ]),
           ]),
         ]),
         _vm._v(" "),
         _c(
           "tbody",
           [
+            _vm._m(8),
+            _vm._v(" "),
             _vm._l(_vm.jogos, function (j) {
               return j.error == true
                 ? [
@@ -52437,7 +53113,7 @@ var render = function () {
                       _c(
                         "td",
                         {
-                          staticStyle: { "text-align": "center" },
+                          staticClass: "text-center align-middle",
                           attrs: { colspan: "9" },
                         },
                         [_c("b", [_vm._v(_vm._s(j.message))])]
@@ -52446,13 +53122,13 @@ var render = function () {
                   ]
                 : [
                     _c("tr", [
-                      _c("td", { staticStyle: { "text-align": "center" } }, [
+                      _c("td", { staticClass: "text-center align-middle" }, [
                         _c("b", [_vm._v(_vm._s(j.rodada) + " ª")]),
                       ]),
                       _vm._v(" "),
                       _c(
                         "td",
-                        { staticStyle: { "text-align": "center" } },
+                        { staticClass: "text-center align-middle" },
                         [
                           _vm._l(_vm.times, function (time) {
                             return j.id_time_casa !== time.id
@@ -52472,21 +53148,21 @@ var render = function () {
                         2
                       ),
                       _vm._v(" "),
-                      _c("td", { staticStyle: { "text-align": "center" } }, [
+                      _c("td", { staticClass: "text-center align-middle" }, [
                         _vm._v(_vm._s(j.placar_time_casa)),
                       ]),
                       _vm._v(" "),
-                      _c("td", { staticStyle: { "text-align": "center" } }, [
+                      _c("td", { staticClass: "text-center align-middle" }, [
                         _vm._v("X"),
                       ]),
                       _vm._v(" "),
-                      _c("td", { staticStyle: { "text-align": "center" } }, [
+                      _c("td", { staticClass: "text-center align-middle" }, [
                         _vm._v(_vm._s(j.placar_time_fora)),
                       ]),
                       _vm._v(" "),
                       _c(
                         "td",
-                        { staticStyle: { "text-align": "center" } },
+                        { staticClass: "text-center align-middle" },
                         [
                           _vm._l(_vm.times, function (time) {
                             return j.id_time_fora !== time.id
@@ -52506,103 +53182,100 @@ var render = function () {
                         2
                       ),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(j.estadio))]),
+                      _c("td", { staticClass: "text-center align-middle" }, [
+                        _vm._v(_vm._s(j.estadio)),
+                      ]),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(_vm.format_date(j.data_jogo)))]),
+                      _c("td", { staticClass: "text-center align-middle" }, [
+                        _vm._v(_vm._s(_vm.format_date(j.data_jogo))),
+                      ]),
                       _vm._v(" "),
                       _c("td", [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "form-group",
-                            staticStyle: { "text-align": "center" },
-                          },
-                          [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-warning btn-sm mb-1",
-                                attrs: {
-                                  type: "button",
-                                  "data-toggle": "modal",
-                                  "data-id": j.id,
-                                  "data-name": "Editar jogo",
-                                },
-                                on: {
-                                  click: function ($event) {
-                                    return _vm.modalEditarJogo(
-                                      j.id,
-                                      j.rodada,
-                                      j.id_time_casa,
-                                      j.id_time_fora,
-                                      j.estadio,
-                                      j.data_jogo
-                                    )
-                                  },
+                        _c("div", { staticClass: "form-group text-center" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-warning btn-sm mb-1",
+                              attrs: {
+                                type: "button",
+                                "data-toggle": "modal",
+                                "data-id": j.id,
+                                "data-name": "Editar jogo",
+                              },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.modalEditarJogo(
+                                    j.id,
+                                    j.rodada,
+                                    j.id_time_casa,
+                                    j.id_time_fora,
+                                    j.estadio,
+                                    j.data_jogo
+                                  )
                                 },
                               },
-                              [
-                                _c(
-                                  "svg",
-                                  {
-                                    staticClass: "bi bi-pencil-square",
+                            },
+                            [
+                              _c(
+                                "svg",
+                                {
+                                  staticClass: "bi bi-pencil-square",
+                                  attrs: {
+                                    xmlns: "http://www.w3.org/2000/svg",
+                                    width: "16",
+                                    height: "16",
+                                    fill: "currentColor",
+                                    viewBox: "0 0 16 16",
+                                  },
+                                },
+                                [
+                                  _c("path", {
                                     attrs: {
-                                      xmlns: "http://www.w3.org/2000/svg",
-                                      width: "16",
-                                      height: "16",
-                                      fill: "currentColor",
-                                      viewBox: "0 0 16 16",
+                                      d: "M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z",
                                     },
-                                  },
-                                  [
-                                    _c("path", {
-                                      attrs: {
-                                        d: "M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z",
-                                      },
-                                    }),
-                                    _vm._v(" "),
-                                    _c("path", {
-                                      attrs: {
-                                        "fill-rule": "evenodd",
-                                        d: "M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z",
-                                      },
-                                    }),
-                                  ]
-                                ),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "btn btn-outline-secondary btn-sm mb-1",
-                                attrs: {
-                                  type: "button",
-                                  "data-toggle": "modal",
-                                  "data-id": j.id,
-                                  "data-name": "Editar jogo",
-                                },
-                                on: {
-                                  click: function ($event) {
-                                    return _vm.modalPlacarJogo(
-                                      j.id,
-                                      j.id_time_casa,
-                                      j.placar_time_casa,
-                                      j.id_time_fora,
-                                      j.placar_time_fora
-                                    )
-                                  },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("path", {
+                                    attrs: {
+                                      "fill-rule": "evenodd",
+                                      d: "M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z",
+                                    },
+                                  }),
+                                ]
+                              ),
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn btn-outline-secondary btn-sm mb-1",
+                              attrs: {
+                                type: "button",
+                                "data-toggle": "modal",
+                                "data-id": j.id,
+                                "data-name": "Editar jogo",
+                              },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.modalPlacarJogo(
+                                    j.id,
+                                    j.id_time_casa,
+                                    j.placar_time_casa,
+                                    j.id_time_fora,
+                                    j.placar_time_fora
+                                  )
                                 },
                               },
-                              [
-                                _c("img", {
-                                  attrs: { src: "storage/escudos/ball-1.png" },
-                                }),
-                              ]
-                            ),
-                          ]
-                        ),
+                            },
+                            [
+                              _c("img", {
+                                attrs: { src: "storage/escudos/ball-1.png" },
+                              }),
+                            ]
+                          ),
+                        ]),
                       ]),
                     ]),
                   ]
@@ -54024,27 +54697,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "d-flex justify-content-center mt-3 carregandoTabela d-none",
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "spinner-border", attrs: { role: "status" } },
-          [_c("span", { staticClass: "sr-only" })]
-        ),
-      ]
-    )
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("th", [
-      _c("div", { staticClass: "form-group" }, [_vm._v("Rodada")]),
+      _c("div", { staticClass: "form-group text-center" }, [_vm._v("RODADA")]),
     ])
   },
   function () {
@@ -54052,7 +54706,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("th", [
-      _c("div", { staticClass: "form-group" }, [_vm._v("Time casa")]),
+      _c("div", { staticClass: "form-group text-center" }, [
+        _vm._v("TIME CASA"),
+      ]),
     ])
   },
   function () {
@@ -54060,21 +54716,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("th", [
-      _c("div", { staticClass: "form-group" }, [_vm._v("Placar casa")]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("th", [_c("div", { staticClass: "form-group" }, [_vm._v("X")])])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("th", [
-      _c("div", { staticClass: "form-group" }, [_vm._v("Placar visitante")]),
+      _c("div", { staticClass: "form-group text-center" }, [
+        _vm._v("PLACAR CASA"),
+      ]),
     ])
   },
   function () {
@@ -54082,7 +54726,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("th", [
-      _c("div", { staticClass: "form-group" }, [_vm._v("Time visitante")]),
+      _c("div", { staticClass: "form-group text-center" }, [_vm._v("X")]),
     ])
   },
   function () {
@@ -54090,7 +54734,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("th", [
-      _c("div", { staticClass: "form-group" }, [_vm._v("Estádio")]),
+      _c("div", { staticClass: "form-group text-center" }, [
+        _vm._v("PLACAR VISITANTE"),
+      ]),
     ])
   },
   function () {
@@ -54098,7 +54744,41 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("th", [
-      _c("div", { staticClass: "form-group" }, [_vm._v("Data")]),
+      _c("div", { staticClass: "form-group text-center" }, [
+        _vm._v("TIME VISITANTE"),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", [
+      _c("div", { staticClass: "form-group text-center" }, [_vm._v("ESTÁDIO")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", [
+      _c("div", { staticClass: "form-group text-center" }, [_vm._v("DATA")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", { staticClass: "carregandoTabela d-none" }, [
+      _c("td", { attrs: { colspan: "9" } }, [
+        _c("div", { staticClass: "d-flex justify-content-center" }, [
+          _c(
+            "div",
+            { staticClass: "spinner-border", attrs: { role: "status" } },
+            [_c("span", { staticClass: "sr-only" })]
+          ),
+        ]),
+      ]),
     ])
   },
   function () {
@@ -54184,7 +54864,7 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "form-group mb-1" }, [
-    _c("h1", [
+    _c("h1", { staticStyle: { margin: "0" } }, [
       _vm._v("\n        Jogos\n        "),
       _c(
         "button",
@@ -54257,40 +54937,36 @@ var render = function () {
     _c("div", { staticClass: "table-responsive" }, [
       _c("table", { staticClass: "table table-hover" }, [
         _c("thead", [
-          _c(
-            "th",
-            { staticClass: "d-flex justify-content-center align-items-center" },
-            [
-              _c("div", { staticClass: "form-group col-md-12" }, [
-                _c(
-                  "select",
-                  {
-                    staticClass: "form-control form-control-sm",
-                    attrs: { id: "selecionarRodada", name: "selecionarRodada" },
-                    on: {
-                      change: function ($event) {
-                        return _vm.selecionarRodada()
-                      },
+          _c("th", [
+            _c("div", { staticClass: "form-group col-md-12" }, [
+              _c(
+                "select",
+                {
+                  staticClass: "form-control form-control-sm",
+                  attrs: { id: "selecionarRodada", name: "selecionarRodada" },
+                  on: {
+                    change: function ($event) {
+                      return _vm.selecionarRodada()
                     },
                   },
-                  [
-                    _c("option", { attrs: { value: "", selected: "" } }, [
-                      _vm._v("Escolha uma rodada"),
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.numeroRodadas, function (r) {
-                      return _c("option", { domProps: { value: r } }, [
-                        _vm._v(_vm._s(r) + "ª Rodada"),
-                      ])
-                    }),
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _vm._m(0),
-              ]),
-            ]
-          ),
+                },
+                [
+                  _c("option", { attrs: { value: "", selected: "" } }, [
+                    _vm._v("Escolha uma rodada"),
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.numeroRodadas, function (r) {
+                    return _c("option", { domProps: { value: r } }, [
+                      _vm._v(_vm._s(r) + "ª Rodada"),
+                    ])
+                  }),
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _vm._m(0),
+            ]),
+          ]),
         ]),
         _vm._v(" "),
         _c(
@@ -54485,63 +55161,58 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "table-responsive" }, [
-    _c("table", { staticClass: "table table-hover" }, [
-      _c("thead", [
-        _c(
-          "th",
-          { staticClass: "d-flex justify-content-center align-items-center" },
-          [
-            _c("div", { staticClass: "form-group" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-outline-primary btn-sm btAtualizar",
-                  attrs: {
-                    type: "button",
-                    alt: "Atuliazar Tabela",
-                    title: "Atuliazar Tabela",
-                  },
-                  on: {
-                    click: function ($event) {
-                      return _vm.atualizarTabela()
-                    },
-                  },
+    _c("h1", [
+      _vm._v("\n        Times\n        "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-outline-primary btn-sm btAtualizar",
+          attrs: {
+            type: "button",
+            alt: "Atuliazar Tabela",
+            title: "Atuliazar Tabela",
+          },
+          on: {
+            click: function ($event) {
+              return _vm.atualizarTabela()
+            },
+          },
+        },
+        [
+          _c(
+            "svg",
+            {
+              staticClass: "bi bi-arrow-clockwise",
+              attrs: {
+                xmlns: "http://www.w3.org/2000/svg",
+                width: "16",
+                height: "16",
+                fill: "currentColor",
+                viewBox: "0 0 16 16",
+              },
+            },
+            [
+              _c("path", {
+                attrs: {
+                  "fill-rule": "evenodd",
+                  d: "M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z",
                 },
-                [
-                  _c(
-                    "svg",
-                    {
-                      staticClass: "bi bi-arrow-clockwise",
-                      attrs: {
-                        xmlns: "http://www.w3.org/2000/svg",
-                        width: "16",
-                        height: "16",
-                        fill: "currentColor",
-                        viewBox: "0 0 16 16",
-                      },
-                    },
-                    [
-                      _c("path", {
-                        attrs: {
-                          "fill-rule": "evenodd",
-                          d: "M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z",
-                        },
-                      }),
-                      _vm._v(" "),
-                      _c("path", {
-                        attrs: {
-                          d: "M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z",
-                        },
-                      }),
-                    ]
-                  ),
-                ]
-              ),
+              }),
               _vm._v(" "),
-              _vm._m(0),
-            ]),
-          ]
-        ),
+              _c("path", {
+                attrs: {
+                  d: "M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z",
+                },
+              }),
+            ]
+          ),
+        ]
+      ),
+    ]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table table-hover table-striped" }, [
+      _c("thead", { staticStyle: { background: "#cfe2ff" } }, [
+        _vm._m(0),
         _vm._v(" "),
         _vm._m(1),
         _vm._v(" "),
@@ -54555,101 +55226,228 @@ var render = function () {
         _vm._v(" "),
         _vm._m(6),
         _vm._v(" "),
-        _c(
-          "th",
-          { staticClass: "d-flex justify-content-center align-items-center" },
-          [
-            _c("div", { staticClass: "form-group" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary btn-sm btAtualizar",
-                  attrs: {
-                    type: "button",
-                    alt: "Atuliazar Tabela",
-                    title: "Atuliazar Tabela",
-                  },
-                  on: {
-                    click: function ($event) {
-                      return _vm.atualizarTabela()
-                    },
+        _vm._m(7),
+        _vm._v(" "),
+        _vm._m(8),
+        _vm._v(" "),
+        _vm._m(9),
+        _vm._v(" "),
+        _vm._m(10),
+        _vm._v(" "),
+        _vm._m(11),
+        _vm._v(" "),
+        _c("th", [
+          _c("div", { staticClass: "form-group text-center" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary btn-sm btAtualizar",
+                attrs: {
+                  type: "button",
+                  alt: "Atuliazar Tabela",
+                  title: "Atuliazar Tabela",
+                },
+                on: {
+                  click: function ($event) {
+                    return _vm.modalCadastrarTime()
                   },
                 },
-                [
-                  _c("i", { staticClass: "bi bi-plus-circle" }),
-                  _vm._v(" Cadastrar time\n                    "),
-                ]
-              ),
-            ]),
-          ]
-        ),
+              },
+              [
+                _c("i", { staticClass: "bi bi-plus-circle" }),
+                _vm._v(" Cadastrar time\n                    "),
+              ]
+            ),
+          ]),
+        ]),
       ]),
       _vm._v(" "),
       _c(
         "tbody",
-        _vm._l(_vm.times, function (t, key) {
-          return _c("tr", [
-            _c(
-              "th",
-              {
-                class:
-                  key < 4
-                    ? "table-primary"
-                    : key >= 4 && key < 6
-                    ? "table-info"
-                    : key >= 6 && key < 12
-                    ? "table-warning"
-                    : key > 15
-                    ? "table-danger"
-                    : "",
-                staticStyle: {
-                  "vertical-align": "middle",
-                  "text-align": "center",
+        [
+          _vm._m(12),
+          _vm._v(" "),
+          _vm._l(_vm.times, function (t, key) {
+            return _c("tr", [
+              _c(
+                "th",
+                {
+                  staticClass: "text-center align-middle",
+                  style:
+                    key < 4
+                      ? "background: rgb(182 227 182);"
+                      : key >= 4 && key < 6
+                      ? "background: rgb(225 226 255);"
+                      : key >= 6 && key < 12
+                      ? "background: #f2e7c3;"
+                      : key > 15
+                      ? "background: #eccccf;"
+                      : "background: #ffffff",
                 },
-              },
-              [
-                _vm._v(
-                  "\n                        " +
-                    _vm._s((key = key + 1)) +
-                    "º\n                        "
-                ),
-                _c(
-                  "small",
-                  {
-                    staticClass:
-                      "d-flex justify-content-center align-items-center",
-                    staticStyle: { "font-size": "x-small" },
-                  },
-                  [
-                    _vm._v(
-                      "\n                            " +
-                        _vm._s(
-                          key <= 4
-                            ? "Libertadores"
-                            : key > 4 && key <= 6
-                            ? "Pré-Libertadores"
-                            : key <= 12
-                            ? "Sulamericana"
-                            : key > 16
-                            ? "Rebaixamento"
-                            : ""
-                        ) +
-                        "\n                        "
-                    ),
-                  ]
-                ),
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "td",
-              {
-                staticStyle: {
-                  "vertical-align": "middle",
-                  "text-align": "center",
-                },
-              },
-              [
+                [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s((key = key + 1)) +
+                      "º\n                        "
+                  ),
+                  _vm._l(_vm.dadosApi, function (api) {
+                    return api.time.time_id !== t.id
+                      ? void 0
+                      : [
+                          api.variacao_posicao < 0
+                            ? [
+                                _c(
+                                  "small",
+                                  {
+                                    staticStyle: {
+                                      color: "red",
+                                      "font-size": "8px",
+                                      "vertical-align": "super",
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "svg",
+                                      {
+                                        staticClass: "bi bi-box-arrow-in-down",
+                                        attrs: {
+                                          xmlns: "http://www.w3.org/2000/svg",
+                                          width: "11",
+                                          height: "11",
+                                          fill: "currentColor",
+                                          viewBox: "0 0 16 16",
+                                        },
+                                      },
+                                      [
+                                        _c("path", {
+                                          attrs: {
+                                            "fill-rule": "evenodd",
+                                            d: "M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z",
+                                          },
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(api.variacao_posicao) +
+                                        "\n                                "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            : api.variacao_posicao > 0
+                            ? [
+                                _c(
+                                  "small",
+                                  {
+                                    staticStyle: {
+                                      color: "green",
+                                      "font-size": "8px",
+                                      "vertical-align": "super",
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "svg",
+                                      {
+                                        staticClass: "bi bi-box-arrow-in-up",
+                                        attrs: {
+                                          xmlns: "http://www.w3.org/2000/svg",
+                                          width: "11",
+                                          height: "11",
+                                          fill: "currentColor",
+                                          viewBox: "0 0 16 16",
+                                        },
+                                      },
+                                      [
+                                        _c("path", {
+                                          attrs: {
+                                            "fill-rule": "evenodd",
+                                            d: "M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3z",
+                                          },
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(api.variacao_posicao) +
+                                        "\n                                "
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            : [
+                                _c(
+                                  "small",
+                                  {
+                                    staticStyle: {
+                                      color: "gray",
+                                      "font-size": "8px",
+                                      "vertical-align": "super",
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "svg",
+                                      {
+                                        staticClass: "bi bi-square-fill",
+                                        attrs: {
+                                          xmlns: "http://www.w3.org/2000/svg",
+                                          width: "11",
+                                          height: "11",
+                                          fill: "currentColor",
+                                          viewBox: "0 0 16 16",
+                                        },
+                                      },
+                                      [
+                                        _c("path", {
+                                          attrs: {
+                                            d: "M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z",
+                                          },
+                                        }),
+                                      ]
+                                    ),
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(api.variacao_posicao) +
+                                        "\n                                "
+                                    ),
+                                  ]
+                                ),
+                              ],
+                        ]
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "small",
+                    {
+                      staticClass:
+                        "d-flex justify-content-center align-items-center",
+                      staticStyle: { "font-size": "x-small" },
+                    },
+                    [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(
+                            key <= 4
+                              ? "Libertadores"
+                              : key > 4 && key <= 6
+                              ? "Pré-Libertadores"
+                              : key <= 12
+                              ? "Sulamericana"
+                              : key > 16
+                              ? "Rebaixamento"
+                              : ""
+                          ) +
+                          "\n                        "
+                      ),
+                    ]
+                  ),
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("td", { staticClass: "text-center align-middle" }, [
                 _c("img", { attrs: { src: t.escudo, width: "30px" } }),
                 _vm._v(" "),
                 _c("br"),
@@ -54657,173 +55455,390 @@ var render = function () {
                 _c("span", { staticStyle: { "font-size": "xx-small" } }, [
                   _vm._v(_vm._s(t.time)),
                 ]),
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "td",
-              {
-                staticStyle: {
-                  "vertical-align": "middle",
-                  "text-align": "center",
+              ]),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center align-middle",
+                  staticStyle: { background: "#e6e7e9" },
                 },
-              },
-              [_vm._v(_vm._s(t.ponto))]
-            ),
-            _vm._v(" "),
-            _c(
-              "td",
-              {
-                staticStyle: {
-                  "vertical-align": "middle",
-                  "text-align": "center",
+                [_vm._v(_vm._s(t.ponto))]
+              ),
+              _vm._v(" "),
+              _c("td", { staticClass: "text-center align-middle" }, [
+                _vm._v(_vm._s(t.jogo)),
+              ]),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center align-middle",
+                  staticStyle: { background: "#e6e7e9" },
                 },
-              },
-              [_vm._v(_vm._s(t.jogo))]
-            ),
-            _vm._v(" "),
-            _c(
-              "td",
-              {
-                staticStyle: {
-                  "vertical-align": "middle",
-                  "text-align": "center",
+                [_vm._v(_vm._s(t.vitoria))]
+              ),
+              _vm._v(" "),
+              _c("td", { staticClass: "text-center align-middle" }, [
+                _vm._v(_vm._s(t.empate)),
+              ]),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center align-middle",
+                  staticStyle: { background: "#e6e7e9" },
                 },
-              },
-              [_vm._v(_vm._s(t.vitoria))]
-            ),
-            _vm._v(" "),
-            _c(
-              "td",
-              {
-                staticStyle: {
-                  "vertical-align": "middle",
-                  "text-align": "center",
+                [_vm._v(_vm._s(t.derrota))]
+              ),
+              _vm._v(" "),
+              _c("td", { staticClass: "text-center align-middle" }, [
+                _vm._v(_vm._s(t.gols_pro)),
+              ]),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center align-middle",
+                  staticStyle: { background: "#e6e7e9" },
                 },
-              },
-              [_vm._v(_vm._s(t.empate))]
-            ),
-            _vm._v(" "),
-            _c(
-              "td",
-              {
-                staticStyle: {
-                  "vertical-align": "middle",
-                  "text-align": "center",
+                [_vm._v(_vm._s(t.gols_contra))]
+              ),
+              _vm._v(" "),
+              _c("td", { staticClass: "text-center align-middle" }, [
+                _vm._v(_vm._s(t.saldo_gols)),
+              ]),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center align-middle",
+                  staticStyle: { background: "#e6e7e9" },
                 },
-              },
-              [_vm._v(_vm._s(t.derrota))]
-            ),
-            _vm._v(" "),
-            _c(
-              "td",
-              {
-                staticStyle: {
-                  "vertical-align": "middle",
-                  "text-align": "center",
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(
+                        t.ponto ? Math.floor((t.ponto * 100) / (t.jogo * 3)) : 0
+                      ) +
+                      "%\n                "
+                  ),
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "td",
+                { staticClass: "text-center align-middle" },
+                [
+                  _vm._l(_vm.dadosApi, function (api) {
+                    return api.time.time_id !== t.id
+                      ? void 0
+                      : _vm._l(api.ultimos_jogos, function (u) {
+                          return [
+                            u == "v"
+                              ? [
+                                  _c(
+                                    "span",
+                                    {
+                                      staticClass: "badge m-1",
+                                      staticStyle: {
+                                        width: "15px",
+                                        height: "15px",
+                                        background: "green",
+                                      },
+                                    },
+                                    [_vm._v(" ")]
+                                  ),
+                                ]
+                              : u == "d"
+                              ? [
+                                  _c(
+                                    "span",
+                                    {
+                                      staticClass: "badge m-1",
+                                      staticStyle: {
+                                        width: "15px",
+                                        height: "15px",
+                                        background: "red",
+                                      },
+                                    },
+                                    [_vm._v(" ")]
+                                  ),
+                                ]
+                              : [
+                                  _c(
+                                    "span",
+                                    {
+                                      staticClass: "badge m-1",
+                                      staticStyle: {
+                                        width: "15px",
+                                        height: "15px",
+                                        background: "gray",
+                                      },
+                                    },
+                                    [_vm._v(" ")]
+                                  ),
+                                ],
+                          ]
+                        })
+                  }),
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center align-middle",
+                  staticStyle: { background: "#e6e7e9" },
                 },
-              },
-              [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "form-group d-flex justify-content-center align-items-center",
-                  },
-                  [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-warning btn-sm m-1",
-                        attrs: {
-                          type: "button",
-                          alt: "Excluir time",
-                          title: "Excluir time",
-                        },
-                        on: {
-                          click: function ($event) {
-                            return _vm.atualizarTabela()
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "form-group d-flex justify-content-center align-items-center",
+                    },
+                    [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-warning btn-sm m-1",
+                          attrs: {
+                            type: "button",
+                            alt: "Editar time",
+                            title: "Editar time",
                           },
-                        },
-                      },
-                      [
-                        _c(
-                          "svg",
-                          {
-                            staticClass: "bi bi-pencil-square",
-                            attrs: {
-                              xmlns: "http://www.w3.org/2000/svg",
-                              width: "16",
-                              height: "16",
-                              fill: "currentColor",
-                              viewBox: "0 0 16 16",
+                          on: {
+                            click: function ($event) {
+                              return _vm.atualizarTabela()
                             },
                           },
-                          [
-                            _c("path", {
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "bi bi-pencil-square",
                               attrs: {
-                                d: "M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z",
+                                xmlns: "http://www.w3.org/2000/svg",
+                                width: "16",
+                                height: "16",
+                                fill: "currentColor",
+                                viewBox: "0 0 16 16",
                               },
-                            }),
-                            _vm._v(" "),
-                            _c("path", {
-                              attrs: {
-                                "fill-rule": "evenodd",
-                                d: "M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z",
-                              },
-                            }),
-                          ]
-                        ),
-                      ]
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d: "M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z",
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c("path", {
+                                attrs: {
+                                  "fill-rule": "evenodd",
+                                  d: "M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z",
+                                },
+                              }),
+                            ]
+                          ),
+                        ]
+                      ),
+                    ]
+                  ),
+                ]
+              ),
+            ])
+          }),
+        ],
+        2
+      ),
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "modalCadastrarTime",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "modalCadastrarTimeLabel",
+          "aria-hidden": "true",
+        },
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c(
+                "form",
+                {
+                  attrs: { id: "createTime", enctype: "multipart/form-data" },
+                  on: { submit: _vm.createTime },
+                },
+                [
+                  _c("div", { staticClass: "modal-header" }, [
+                    _c(
+                      "h5",
+                      {
+                        staticClass: "modal-title",
+                        attrs: { id: "modalCadastrarTimeLabel" },
+                      },
+                      [_vm._v("Cadastrar Time")]
                     ),
                     _vm._v(" "),
                     _c(
                       "button",
                       {
-                        staticClass: "btn btn-danger btn-sm m-1",
+                        staticClass: "close",
                         attrs: {
                           type: "button",
-                          alt: "Editar time",
-                          title: "Editar time",
+                          "data-dismiss": "modal",
+                          "aria-label": "Close",
                         },
                         on: {
                           click: function ($event) {
-                            return _vm.atualizarTabela()
+                            return _vm.modalCadastrarTime()
                           },
                         },
                       },
                       [
-                        _c(
-                          "svg",
-                          {
-                            staticClass: "bi bi-trash3",
-                            attrs: {
-                              xmlns: "http://www.w3.org/2000/svg",
-                              width: "16",
-                              height: "16",
-                              fill: "currentColor",
-                              viewBox: "0 0 16 16",
+                        _c("span", { attrs: { "aria-hidden": "true" } }, [
+                          _vm._v("×"),
+                        ]),
+                      ]
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-12" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.time,
+                              expression: "time",
+                            },
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            id: "time",
+                            name: "time",
+                            required: "",
+                          },
+                          domProps: { value: _vm.time },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.time = $event.target.value
                             },
                           },
-                          [
-                            _c("path", {
-                              attrs: {
-                                d: "M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z",
+                        }),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-12 mt-3" }, [
+                        _c("label", { attrs: { for: "escudo" } }, [
+                          _vm._v("Escudo do time"),
+                        ]),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("input", {
+                          staticClass: "form-control-file",
+                          attrs: {
+                            type: "file",
+                            id: "escudo",
+                            name: "escudo",
+                            required: "",
+                          },
+                          on: { change: _vm.handleFileUpload },
+                        }),
+                      ]),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _vm._m(13),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col-md-12",
+                        staticStyle: { "text-align": "right" },
+                      },
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-outline-danger",
+                            attrs: { type: "button", "data-dismiss": "modal" },
+                            on: {
+                              click: function ($event) {
+                                return _vm.modalCadastrarTime()
                               },
-                            }),
-                          ]
+                            },
+                          },
+                          [_vm._v("Fechar")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-outline-primary modalBtn",
+                            attrs: { type: "submit" },
+                          },
+                          [_vm._v("Cadastrar")]
                         ),
                       ]
                     ),
-                  ]
-                ),
-              ]
-            ),
-          ])
-        }),
-        0
-      ),
-    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row container col-md-12" }, [
+                      _c(
+                        "div",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.msg,
+                              expression: "msg",
+                            },
+                          ],
+                          class:
+                            "alert alert-dismissible fade show mb-3 alert-" +
+                            _vm.classe,
+                          attrs: { role: "alert'" },
+                        },
+                        [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(_vm.msg) +
+                              "\n                                "
+                          ),
+                          _c("button", {
+                            staticClass: "btn-close",
+                            attrs: { type: "button" },
+                          }),
+                        ]
+                      ),
+                    ]),
+                  ]),
+                ]
+              ),
+            ]),
+          ]
+        ),
+      ]
+    ),
   ])
 }
 var staticRenderFns = [
@@ -54831,9 +55846,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "atualizarTabela d-none" }, [
-      _c("div", { staticClass: "spinner-border", attrs: { role: "status" } }, [
-        _c("span", { staticClass: "sr-only" }),
+    return _c("th", [
+      _c("div", { staticClass: "form-group text-center" }, [
+        _vm._v("CLASSIFICAÇÃO"),
       ]),
     ])
   },
@@ -54842,11 +55857,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("th", [
-      _c(
-        "div",
-        { staticClass: "form-group", staticStyle: { "text-align": "center" } },
-        [_vm._v("Times")]
-      ),
+      _c("div", { staticClass: "form-group text-center" }, [_vm._v("TIMES")]),
     ])
   },
   function () {
@@ -54854,11 +55865,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("th", [
-      _c(
-        "div",
-        { staticClass: "form-group", staticStyle: { "text-align": "center" } },
-        [_vm._v("Pontos")]
-      ),
+      _c("div", { staticClass: "form-group text-center" }, [_vm._v("P")]),
     ])
   },
   function () {
@@ -54866,11 +55873,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("th", [
-      _c(
-        "div",
-        { staticClass: "form-group", staticStyle: { "text-align": "center" } },
-        [_vm._v("Jogos")]
-      ),
+      _c("div", { staticClass: "form-group text-center" }, [_vm._v("J")]),
     ])
   },
   function () {
@@ -54878,11 +55881,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("th", [
-      _c(
-        "div",
-        { staticClass: "form-group", staticStyle: { "text-align": "center" } },
-        [_vm._v("Vitórias")]
-      ),
+      _c("div", { staticClass: "form-group text-center" }, [_vm._v("V")]),
     ])
   },
   function () {
@@ -54890,11 +55889,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("th", [
-      _c(
-        "div",
-        { staticClass: "form-group", staticStyle: { "text-align": "center" } },
-        [_vm._v("Empates")]
-      ),
+      _c("div", { staticClass: "form-group text-center" }, [_vm._v("E")]),
     ])
   },
   function () {
@@ -54902,10 +55897,84 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("th", [
+      _c("div", { staticClass: "form-group text-center" }, [_vm._v("D")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", [
+      _c("div", { staticClass: "form-group text-center" }, [_vm._v("GP")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", [
+      _c("div", { staticClass: "form-group text-center" }, [_vm._v("GC")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", [
+      _c("div", { staticClass: "form-group text-center" }, [_vm._v("SG")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", [
+      _c("div", { staticClass: "form-group text-center" }, [_vm._v("%")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", [
+      _c("div", { staticClass: "form-group text-center" }, [
+        _vm._v("ÚLT.JOGOS"),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", { staticClass: "carregandoTabela" }, [
+      _c("td", { attrs: { colspan: "13" } }, [
+        _c("div", { staticClass: "d-flex justify-content-center" }, [
+          _c(
+            "div",
+            { staticClass: "spinner-border", attrs: { role: "status" } },
+            [_c("span", { staticClass: "sr-only" })]
+          ),
+        ]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row container col-md-12" }, [
       _c(
         "div",
-        { staticClass: "form-group", staticStyle: { "text-align": "center" } },
-        [_vm._v("Derrotas")]
+        {
+          staticClass: "d-flex justify-content-center mt-1 carregarTime d-none",
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "spinner-border", attrs: { role: "status" } },
+            [_c("span", { staticClass: "sr-only" })]
+          ),
+        ]
       ),
     ])
   },

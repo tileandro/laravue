@@ -1,6 +1,6 @@
 <template>
     <div class="form-group mb-1">
-        <h1>
+        <h1 style="margin:0">
             Jogos
             <button type="button" class="btn btn-outline-primary btn-sm btRodada" alt="Atuliazar Rodada" title="Atuliazar Rodada" @click="atualizarRodada()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
@@ -16,7 +16,7 @@
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
-                    <th class="d-flex justify-content-center align-items-center">
+                    <th>
                         <div class="form-group col-md-12">
                             <select class="form-control form-control-sm" id="selecionarRodada" name="selecionarRodada" @change="selecionarRodada()">
                                 <option value="" selected>Escolha uma rodada</option>
@@ -95,6 +95,7 @@
                             $('.carregandoRodada').addClass('d-none');
                             this.rodadas = res
                         })
+                        .catch(err => console.log('Erro ao retornar dados!'));
 
                     await fetch('http://localhost/api/v1/tabela', {
                         headers: {'Content-Type': 'application/json', 'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='}
@@ -103,6 +104,7 @@
                         .then((res) => {
                             this.times = res
                         })
+                        .catch(err => console.log('Erro ao retornar dados!'));
                 }else{
                     $('.alert-warning').removeClass('d-none');
                 }
@@ -118,6 +120,7 @@
                         $('.carregandoRodada').addClass('d-none');
                         this.rodadas = res
                     })
+                    .catch(err => console.log('Erro ao retornar dados!'));
                 }else{
                     $('.alert-warning').removeClass('d-none');
                 }

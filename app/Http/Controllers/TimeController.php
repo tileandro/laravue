@@ -44,33 +44,25 @@ class TimeController extends Controller
      */
     public function store(Request $request)
     {
+        try {
+            //dd($request);
 
-
-        $request->validate(
-            [
-                'time' => 'required|min:3|max:50',
-                'escudo' => 'required'
-            ],
-            [
-                'required' => 'Campo :attribute é obrigatório seu preenchimento'
-            ]
-        );
-
-        if ($request->hasFile('escudo') && $request->file('escudo')->isValid()) {
-            $extension = $request->file('escudo')->getClientOriginalExtension();
-            $name = uniqid();
-            //salva um nome baseado no id
-            $nameFile = $name . '.' . $extension;
-            $request->escudo->move(public_path('storage/escudos'), $nameFile);
-        } else {
-            return back()->withErrors('O arquivo deve ser uma imagem!');
+            if ($request->hasFile('escudo')) {
+                $file = $request->file('escudo');
+                $extension = $request->file('escudo')->getClientOriginalExtension();
+                $name = uniqid();
+                //salva um nome baseado no id
+                $nameFile = $name . '.' . $extension;
+                $file->move(public_path('image'), $nameFile);
+                $time = new Time();
+                $time->time = $request->time;
+                $time->escudo = 'image/' . $nameFile;
+                $time->save();
+                return response()->json([$time], 201);
+            }
+        } catch (Exception $ex) {
+            return response()->json(['error' => true, 'message' => $ex->getMessage()], $ex->getCode());
         }
-
-        $time = new Time();
-        $time->time = $request->time;
-        $time->escudo = 'storage/escudos/' . $nameFile;
-        $time->save();
-        return back()->with('success', 'Time ' . $request->input('time') . ' cadastrado com sucesso!');
     }
 
     /**
@@ -142,7 +134,11 @@ class TimeController extends Controller
      */
     public function destroy(Time $time)
     {
-        $time->delete();
-        return back()->with('success', 'Time deletado com sucesso!');
+        try {
+            $time->delete();
+            return response()->json([$time], 201);
+        } catch (Exception $ex) {
+            return response()->json(['error' => true, 'message' => $ex->getMessage()], $ex->getCode());
+        }
     }
 }

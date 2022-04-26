@@ -8,24 +8,19 @@
             <option value="" selected>Escolha uma rodada</option>
             <option v-for="r in numeroRodadas" :value="r">{{r}}ª Rodada</option>
         </select>
-        <div class="d-flex justify-content-center mt-3 carregandoTabela d-none">
-            <div class="spinner-border" role="status">
-                <span class="sr-only"></span>
-            </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <th><div class="form-group">Rodada</div></th>
-                    <th><div class="form-group">Time casa</div></th>
-                    <th><div class="form-group">Placar casa</div></th>
-                    <th><div class="form-group">X</div></th>
-                    <th><div class="form-group">Placar visitante</div></th>
-                    <th><div class="form-group">Time visitante</div></th>
-                    <th><div class="form-group">Estádio</div></th>
-                    <th><div class="form-group">Data</div></th>
+        <div class="table-responsive mt-3">
+            <table class="table table-hover table-striped">
+                <thead style="background: #cfe2ff;">
+                    <th><div class="form-group text-center">RODADA</div></th>
+                    <th><div class="form-group text-center">TIME CASA</div></th>
+                    <th><div class="form-group text-center">PLACAR CASA</div></th>
+                    <th><div class="form-group text-center">X</div></th>
+                    <th><div class="form-group text-center">PLACAR VISITANTE</div></th>
+                    <th><div class="form-group text-center">TIME VISITANTE</div></th>
+                    <th><div class="form-group text-center">ESTÁDIO</div></th>
+                    <th><div class="form-group text-center">DATA</div></th>
                     <th>
-                        <div class="form-group" style="text-align: center;">
+                        <div class="form-group text-center">
                             <button type="button" class="btn btn-primary btn-sm cadastrarjogo d-none" @click="modalJogo()" data-name="Cadastrar jogo">
                                 Cadastrar jogos
                             </button>
@@ -33,33 +28,42 @@
                     </th>
                 </thead>
                 <tbody>
+                    <tr class="carregandoTabela d-none">
+                        <td colspan="9">
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only"></span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
                     <template v-for="j in jogos" v-if="j.error == true">
                         <tr>
-                            <td colspan="9" style="text-align:center"><b>{{j.message}}</b></td>
+                            <td colspan="9" class="text-center align-middle"><b>{{j.message}}</b></td>
                         </tr>
                     </template>
                     <template v-else>
                         <tr>
-                            <td style="text-align:center"><b>{{j.rodada}} ª</b></td>
-                            <td style="text-align:center">
+                            <td class="text-center align-middle"><b>{{j.rodada}} ª</b></td>
+                            <td class="text-center align-middle">
                                 <template v-for="time in times" v-if="j.id_time_casa !== time.id"></template>
                                 <template v-else>
                                     <img :src="time.escudo" :alt="time.time" :title="time.time" width="30px">
                                 </template>
                             </td>
-                            <td style="text-align:center">{{j.placar_time_casa}}</td>
-                            <td style="text-align:center">X</td>
-                            <td style="text-align:center">{{j.placar_time_fora}}</td>
-                            <td style="text-align:center">
+                            <td class="text-center align-middle">{{j.placar_time_casa}}</td>
+                            <td class="text-center align-middle">X</td>
+                            <td class="text-center align-middle">{{j.placar_time_fora}}</td>
+                            <td class="text-center align-middle">
                                 <template v-for="time in times" v-if="j.id_time_fora !== time.id"></template>
                                 <template v-else>
                                     <img :src="time.escudo" :alt="time.time" :title="time.time" width="30px">
                                 </template>
                             </td>
-                            <td>{{j.estadio}}</td>
-                            <td>{{format_date(j.data_jogo)}}</td>
+                            <td class="text-center align-middle">{{j.estadio}}</td>
+                            <td class="text-center align-middle">{{format_date(j.data_jogo)}}</td>
                             <td>
-                                <div class="form-group" style="text-align: center;">
+                                <div class="form-group text-center">
                                     <button type="button" class="btn btn-warning btn-sm mb-1" @click="modalEditarJogo(j.id, j.rodada, j.id_time_casa, j.id_time_fora, j.estadio, j.data_jogo)" data-toggle="modal" :data-id="j.id" data-name="Editar jogo">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -412,7 +416,13 @@
                 empate_fora: null,
                 derrota_fora: null,
                 time_casa: null,
-                time_fora: null
+                time_fora: null,
+                gols_pro_casa: null,
+                gols_contra_casa: null,
+                saldo_gols_casa: null,
+                gols_pro_fora: null,
+                gols_contra_fora: null,
+                saldo_gols_fora: null,
             }
         },
         created(){},
@@ -585,7 +595,6 @@
                         const error = (data && data.message) || response.statusText;
                         return Promise.reject(error);
                     }
-                    console.log(data);
                     $('.editandoJogo').addClass('d-none');
                     $('.alert').show();
                     this.selecionarRodada();
@@ -623,7 +632,6 @@
                 }
 
                 const placarJson = JSON.stringify(placar);
-                console.log(placarJson);
                 await fetch('http://localhost/api/v1/rodadas/' + this.edit_id, {
                     headers: {'Content-Type': 'application/json', 'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='},
                     method: "PUT",
@@ -642,7 +650,7 @@
                         const error = (data && data.message) || response.statusText;
                         return Promise.reject(error);
                     }
-                    console.log(data);
+
                     $('.placarJogo').addClass('d-none');
                     if(this.edit_placar_time_casa > this.edit_placar_time_fora){
                         fetch('http://localhost/api/v1/times/' + this.edit_id_time_casa, {
@@ -655,7 +663,6 @@
                             this.vitoria_casa = res[0].vitoria;
                             this.empate_casa = res[0].empate;
                             this.derrota_casa = res[0].derrota;
-                            this.time_casa = res[0].time;
 
                             const updateCasa = {
                                 ponto: this.ponto_casa + 3,
@@ -813,6 +820,60 @@
                             })
                         })
                     }
+
+                    //Gols Pro, contra e saldo de gols time da casa
+                    fetch('http://localhost/api/v1/times/' + this.edit_id_time_casa, {
+                        headers: {'Content-Type': 'application/json', 'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='}
+                    })
+                    .then(response => response.json())
+                    .then((res) => {
+                        this.gols_pro_casa = res[0].gols_pro;
+                        this.gols_contra_casa = res[0].gols_contra;
+                        this.saldo_gols_casa = res[0].saldo_gols;
+
+                        const updateGolsCasa = {
+                            gols_pro: (this.gols_pro_casa + parseInt(this.edit_placar_time_casa)),
+                            gols_contra: (this.gols_contra_casa + parseInt(this.edit_placar_time_fora)),
+                            saldo_gols: (this.gols_pro_casa + parseInt(this.edit_placar_time_casa)) - (this.gols_contra_casa + parseInt(this.edit_placar_time_fora))
+                        }
+
+                        const updateJsonGolsCasa = JSON.stringify(updateGolsCasa);
+                        fetch('http://localhost/api/v1/times/' + this.edit_id_time_casa, {
+                            headers: {'Content-Type': 'application/json', 'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='},
+                            method: 'PUT',
+                            body: updateJsonGolsCasa
+                        })
+                        .then(response => response.json())
+                        .then((res) => {
+                        })
+                    })
+
+                    //Gols Pro, contra e saldo de gols time visitante
+                    fetch('http://localhost/api/v1/times/' + this.edit_id_time_fora, {
+                        headers: {'Content-Type': 'application/json', 'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='}
+                    })
+                    .then(response => response.json())
+                    .then((res) => {
+                        this.gols_pro_fora = res[0].gols_pro;
+                        this.gols_contra_fora = res[0].gols_contra;
+                        this.saldo_gols_fora = res[0].saldo_gols;
+
+                        const updateGolsFora = {
+                            gols_pro: (this.gols_pro_fora + parseInt(this.edit_placar_time_fora)),
+                            gols_contra: (this.gols_contra_fora + parseInt(this.edit_placar_time_casa)),
+                            saldo_gols: (this.gols_pro_fora + parseInt(this.edit_placar_time_fora)) - (this.gols_contra_fora + parseInt(this.edit_placar_time_casa))
+                        }
+
+                        const updateJsonGolsFora = JSON.stringify(updateGolsFora);
+                        fetch('http://localhost/api/v1/times/' + this.edit_id_time_fora, {
+                            headers: {'Content-Type': 'application/json', 'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='},
+                            method: 'PUT',
+                            body: updateJsonGolsFora
+                        })
+                        .then(response => response.json())
+                        .then((res) => {
+                        })
+                    })
 
                     $('.placarJogo').addClass('d-none');
                     this.selecionarRodada();

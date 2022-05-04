@@ -70,7 +70,7 @@
                                             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
                                         </svg>
                                     </button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1" @click="modalPlacarJogo(j.id, j.id_time_casa, j.placar_time_casa, j.id_time_fora, j.placar_time_fora)" data-toggle="modal" :data-id="j.id" data-name="Editar jogo">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm mb-1 inserirPlacar" @click="modalPlacarJogo(j.id, j.id_time_casa, j.placar_time_casa, j.id_time_fora, j.placar_time_fora)" data-toggle="modal" :data-id="j.id" data-name="Placar jogo">
                                         <img src="storage/escudos/ball-1.png"/>
                                     </button>
                                 </div>
@@ -625,6 +625,7 @@
             async placarJogo(e){
                 e.preventDefault();
                 $('.placarJogo').removeClass('d-none');
+                $('.inserirPlacar').addClass('d-none');
                 const placar = {
                     id: this.edit_id,
                     placar_time_casa: this.edit_placar_time_casa,
@@ -651,7 +652,6 @@
                         return Promise.reject(error);
                     }
 
-                    $('.placarJogo').addClass('d-none');
                     if(this.edit_placar_time_casa > this.edit_placar_time_fora){
                         fetch('http://localhost/api/v1/times/' + this.edit_id_time_casa, {
                             headers: {'Content-Type': 'application/json', 'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='}
@@ -832,11 +832,12 @@
                         this.saldo_gols_casa = res[0].saldo_gols;
 
                         const updateGolsCasa = {
-                            gols_pro: (this.gols_pro_casa + parseInt(this.edit_placar_time_casa)),
-                            gols_contra: (this.gols_contra_casa + parseInt(this.edit_placar_time_fora)),
-                            saldo_gols: (this.gols_pro_casa + parseInt(this.edit_placar_time_casa)) - (this.gols_contra_casa + parseInt(this.edit_placar_time_fora))
+                            gols_pro: (parseInt(this.gols_pro_casa) + parseInt(this.edit_placar_time_casa)),
+                            gols_contra: (parseInt(this.gols_contra_casa) + parseInt(this.edit_placar_time_fora)),
+                            saldo_gols: (parseInt(this.gols_pro_casa) + parseInt(this.edit_placar_time_casa)) - (this.gols_contra_casa + parseInt(this.edit_placar_time_fora))
                         }
-
+console.log('Time da casa ')
+console.log(updateGolsCasa)
                         const updateJsonGolsCasa = JSON.stringify(updateGolsCasa);
                         fetch('http://localhost/api/v1/times/' + this.edit_id_time_casa, {
                             headers: {'Content-Type': 'application/json', 'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='},
@@ -845,6 +846,7 @@
                         })
                         .then(response => response.json())
                         .then((res) => {
+                            $('.inserirPlacar').removeClass('d-none');
                         })
                     })
 
@@ -859,11 +861,12 @@
                         this.saldo_gols_fora = res[0].saldo_gols;
 
                         const updateGolsFora = {
-                            gols_pro: (this.gols_pro_fora + parseInt(this.edit_placar_time_fora)),
-                            gols_contra: (this.gols_contra_fora + parseInt(this.edit_placar_time_casa)),
-                            saldo_gols: (this.gols_pro_fora + parseInt(this.edit_placar_time_fora)) - (this.gols_contra_fora + parseInt(this.edit_placar_time_casa))
+                            gols_pro: (parseInt(this.gols_pro_fora) + parseInt(this.edit_placar_time_fora)),
+                            gols_contra: (parseInt(this.gols_contra_fora) + parseInt(this.edit_placar_time_casa)),
+                            saldo_gols: (parseInt(this.gols_pro_fora) + parseInt(this.edit_placar_time_fora)) - (this.gols_contra_fora + parseInt(this.edit_placar_time_casa))
                         }
-
+console.log('Time visitante ')
+console.log(updateGolsFora)
                         const updateJsonGolsFora = JSON.stringify(updateGolsFora);
                         fetch('http://localhost/api/v1/times/' + this.edit_id_time_fora, {
                             headers: {'Content-Type': 'application/json', 'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='},
@@ -872,6 +875,7 @@
                         })
                         .then(response => response.json())
                         .then((res) => {
+                            $('.inserirPlacar').removeClass('d-none');
                         })
                     })
 

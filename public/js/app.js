@@ -5448,7 +5448,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                fetch('http://localhost/api/v1/tabela', {
+                _context.next = 2;
+                return fetch('http://localhost/api/v1/tabela', {
                   headers: {
                     'Content-Type': 'application/json',
                     'apiKey': 'base64:ZSH1CDeccLGyEno/bMaoOmzv7JdRmQ0Bun8fVzDbHGE='
@@ -5462,7 +5463,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   return console.log('Erro ao retornar tabela!');
                 });
 
-              case 1:
+              case 2:
               case "end":
                 return _context.stop();
             }
@@ -6287,13 +6288,14 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
               case 0:
                 e.preventDefault();
                 $('.placarJogo').removeClass('d-none');
+                $('.inserirPlacar').addClass('d-none');
                 placar = {
                   id: _this5.edit_id,
                   placar_time_casa: _this5.edit_placar_time_casa,
                   placar_time_fora: _this5.edit_placar_time_fora
                 };
                 placarJson = JSON.stringify(placar);
-                _context4.next = 6;
+                _context4.next = 7;
                 return fetch('http://localhost/api/v1/rodadas/' + _this5.edit_id, {
                   headers: {
                     'Content-Type': 'application/json',
@@ -6314,8 +6316,6 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                     var error = data && data.message || response.statusText;
                     return Promise.reject(error);
                   }
-
-                  $('.placarJogo').addClass('d-none');
 
                   if (_this5.edit_placar_time_casa > _this5.edit_placar_time_fora) {
                     fetch('http://localhost/api/v1/times/' + _this5.edit_id_time_casa, {
@@ -6523,10 +6523,12 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                     _this5.gols_contra_casa = res[0].gols_contra;
                     _this5.saldo_gols_casa = res[0].saldo_gols;
                     var updateGolsCasa = {
-                      gols_pro: _this5.gols_pro_casa + parseInt(_this5.edit_placar_time_casa),
-                      gols_contra: _this5.gols_contra_casa + parseInt(_this5.edit_placar_time_fora),
-                      saldo_gols: _this5.gols_pro_casa + parseInt(_this5.edit_placar_time_casa) - (_this5.gols_contra_casa + parseInt(_this5.edit_placar_time_fora))
+                      gols_pro: parseInt(_this5.gols_pro_casa) + parseInt(_this5.edit_placar_time_casa),
+                      gols_contra: parseInt(_this5.gols_contra_casa) + parseInt(_this5.edit_placar_time_fora),
+                      saldo_gols: parseInt(_this5.gols_pro_casa) + parseInt(_this5.edit_placar_time_casa) - (_this5.gols_contra_casa + parseInt(_this5.edit_placar_time_fora))
                     };
+                    console.log('Time da casa ');
+                    console.log(updateGolsCasa);
                     var updateJsonGolsCasa = JSON.stringify(updateGolsCasa);
                     fetch('http://localhost/api/v1/times/' + _this5.edit_id_time_casa, {
                       headers: {
@@ -6537,7 +6539,9 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                       body: updateJsonGolsCasa
                     }).then(function (response) {
                       return response.json();
-                    }).then(function (res) {});
+                    }).then(function (res) {
+                      $('.inserirPlacar').removeClass('d-none');
+                    });
                   }); //Gols Pro, contra e saldo de gols time visitante
 
                   //Gols Pro, contra e saldo de gols time visitante
@@ -6553,10 +6557,12 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                     _this5.gols_contra_fora = res[0].gols_contra;
                     _this5.saldo_gols_fora = res[0].saldo_gols;
                     var updateGolsFora = {
-                      gols_pro: _this5.gols_pro_fora + parseInt(_this5.edit_placar_time_fora),
-                      gols_contra: _this5.gols_contra_fora + parseInt(_this5.edit_placar_time_casa),
-                      saldo_gols: _this5.gols_pro_fora + parseInt(_this5.edit_placar_time_fora) - (_this5.gols_contra_fora + parseInt(_this5.edit_placar_time_casa))
+                      gols_pro: parseInt(_this5.gols_pro_fora) + parseInt(_this5.edit_placar_time_fora),
+                      gols_contra: parseInt(_this5.gols_contra_fora) + parseInt(_this5.edit_placar_time_casa),
+                      saldo_gols: parseInt(_this5.gols_pro_fora) + parseInt(_this5.edit_placar_time_fora) - (_this5.gols_contra_fora + parseInt(_this5.edit_placar_time_casa))
                     };
+                    console.log('Time visitante ');
+                    console.log(updateGolsFora);
                     var updateJsonGolsFora = JSON.stringify(updateGolsFora);
                     fetch('http://localhost/api/v1/times/' + _this5.edit_id_time_fora, {
                       headers: {
@@ -6567,7 +6573,9 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                       body: updateJsonGolsFora
                     }).then(function (response) {
                       return response.json();
-                    }).then(function (res) {});
+                    }).then(function (res) {
+                      $('.inserirPlacar').removeClass('d-none');
+                    });
                   });
                   $('.placarJogo').addClass('d-none');
 
@@ -6579,7 +6587,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default().locale('pt-br');
                   _this5.msg = "Placar " + _this5.edit_time_casa + " x " + _this5.edit_time_fora + " inserido com sucesso!", _this5.edit_placar_casa = null, _this5.edit_placar_fora = null;
                 });
 
-              case 6:
+              case 7:
               case "end":
                 return _context4.stop();
             }
@@ -53250,12 +53258,12 @@ var render = function () {
                             "button",
                             {
                               staticClass:
-                                "btn btn-outline-secondary btn-sm mb-1",
+                                "btn btn-outline-secondary btn-sm mb-1 inserirPlacar",
                               attrs: {
                                 type: "button",
                                 "data-toggle": "modal",
                                 "data-id": j.id,
-                                "data-name": "Editar jogo",
+                                "data-name": "Placar jogo",
                               },
                               on: {
                                 click: function ($event) {

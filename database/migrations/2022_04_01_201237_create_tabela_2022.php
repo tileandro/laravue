@@ -21,6 +21,9 @@ class CreateTabela2022 extends Migration
             $table->integer('vitoria')->default(0);
             $table->integer('empate')->default(0);
             $table->integer('derrota')->default(0);
+            $table->integer('gols_pro')->default(0);
+            $table->integer('gols_contra')->default(0);
+            $table->integer('saldo_gols')->default(0);
             $table->string('escudo');
             $table->timestamps();
         });
